@@ -23,3 +23,5 @@ router.get('/users/me', passport.authorize('jwt', { session: false }), (req, res
       res.status(201).send(user)
     })
   })
+
+module.exports = router

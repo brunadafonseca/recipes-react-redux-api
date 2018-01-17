@@ -1,18 +1,21 @@
 const express = require('express')
-const { recipes } = require('./routes')
+const { recipes, users, sessions } = require('./routes')
 const bodyParser = require('body-parser')
 const passport = require('./config/auth')
+const cors = require('cors')
 
 const PORT = process.env.PORT || 3030
 
 let app = express()
 
 app
+  .use(cors())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(passport.initialize())
-
   .use(recipes)
+  .use(users)
+  .use(sessions)
 
   .use((req, res, next) => {
     const err = new Error('Not Found')
@@ -28,9 +31,6 @@ app
     })
   })
 
-  .get('/', (req, res) => {
-    res.send('Hello!')
-  })
 
   .listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)
